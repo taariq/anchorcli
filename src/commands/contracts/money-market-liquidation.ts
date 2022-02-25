@@ -163,7 +163,7 @@ const liquidationUpdateConfig = menu
   );
 
 const query = createQueryMenu(
-  'liquidation',
+  'liquidationQueue',
   'Anchor Liquidation contract queries',
 );
 
@@ -187,7 +187,7 @@ const getBid = query
     const addressProvider = new AddressProviderFromJSON(
       resolveChainIDToNetworkName(query.chainId),
     );
-    const queryBid = await queryLiquidationBid({
+    const queryBid = await queryLiquidationQueueBid({
       lcd,
       collateral_token: accAddress(collateralToken),
       bidder: accAddress(bidder),
@@ -205,19 +205,22 @@ const getBidsByUser = query
   .command('bids-by-user')
   .description('Get information for all bids submitted by the specified bidder')
   .requiredOption('--bidder <AccAddress>', 'Address of bidder')
+  .option('--collateral-token <AccAddress>', 'Collateral contract address of collateral to start query')
   .option(
     '--start-after <AccAddress>',
     'Token contract address of collateral to start query',
   )
+
   .option('--limit <int>', 'Maximum number of query entries')
-  .action(async ({ bidder, startAfter, limit }: BidsByUser) => {
+  .action(async ({ bidder, collateralToken, startAfter, limit }: BidsByUser) => {
     const lcd = getLCDClient(query.chainId);
     const addressProvider = new AddressProviderFromJSON(
       resolveChainIDToNetworkName(query.chainId),
     );
-    const queryBidsByUser = await queryLiquidationBidsByUser({
+    const queryBidsByUser = await queryLiquidationQueueBidsByUser({
       lcd,
       bidder: accAddress(bidder),
+      collateral_token: accAddress(collateralToken),
       start_after: accAddress(startAfter),
       limit: int(limit),
     })(addressProvider);
