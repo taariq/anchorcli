@@ -19,6 +19,7 @@ export interface Contracts {
   mmCustody: string;
   mmCustodyBEth: string;
   mmLiquidation: string;
+  mmLiquidationQueue: string;
   mmDistributionModel: string;
   aTerra: string;
   terraswapblunaLunaPair: string;
