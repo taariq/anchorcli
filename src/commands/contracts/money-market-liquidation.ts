@@ -20,6 +20,7 @@ import {
   queryLiquidationBid,
   queryLiquidationBidsByCollateral,
   queryLiquidationBidsByUser,
+  queryLiquidationQueueBidsByUser,
   queryLiquidationConfig,
   queryLiquidationLiquidationAmount,
 } from '@anchor-protocol/anchor.js';
