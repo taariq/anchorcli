@@ -207,27 +207,32 @@ const getBidsByUser = query
   .command('bids-by-user')
   .description('Get information for all bids submitted by the specified bidder')
   .requiredOption('--bidder <AccAddress>', 'Address of bidder')
-  .option('--collateral-token <AccAddress>', 'Collateral contract address of collateral to start query')
+  .option(
+    '--collateral-token <AccAddress>',
+    'Collateral contract address of collateral to start query',
+  )
   .option(
     '--start-after <AccAddress>',
     'Token contract address of collateral to start query',
   )
 
   .option('--limit <int>', 'Maximum number of query entries')
-  .action(async ({ bidder, collateralToken, startAfter, limit }: BidsByUser) => {
-    const lcd = getLCDClient(query.chainId);
-    const addressProvider = new AddressProviderFromJSON(
-      resolveChainIDToNetworkName(query.chainId),
-    );
-    const queryBidsByUser = await queryLiquidationQueueBidByUser({
-      lcd,
-      bidder: accAddress(bidder),
-      collateral_token: accAddress(collateralToken),
-      start_after: accAddress(startAfter),
-      limit: int(limit),
-    })(addressProvider);
-    await handleQueryCommand(query, queryBidsByUser);
-  });
+  .action(
+    async ({ bidder, collateralToken, startAfter, limit }: BidsByUser) => {
+      const lcd = getLCDClient(query.chainId);
+      const addressProvider = new AddressProviderFromJSON(
+        resolveChainIDToNetworkName(query.chainId),
+      );
+      const queryBidsByUser = await queryLiquidationQueueBidByUser({
+        lcd,
+        bidder: accAddress(bidder),
+        collateral_token: accAddress(collateralToken),
+        start_after: accAddress(startAfter),
+        limit: int(limit),
+      })(addressProvider);
+      await handleQueryCommand(query, queryBidsByUser);
+    },
+  );
 
 interface BidsByCollateral {
   collateralToken: string;

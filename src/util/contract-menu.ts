@@ -11,7 +11,7 @@ import {
   Tx,
   TxBody,
   SignOptions,
-  Fee
+  Fee,
 } from '@terra-money/terra.js';
 import { CLIKey } from '@terra-money/terra.js/dist/key/CLIKey';
 import { loadConfig } from './config';
@@ -118,13 +118,11 @@ export async function handleExecCommand(
 
   const lcd = getLCDClient(exec.chainId);
   let key = new CLIKey({ keyName: exec.from, home: exec.home });
-  
+
   const keyType = JSON.parse(
-    execSync(
-      (`terrad keys show ${exec.from} --output json`)
-    ).toString()
-  ).type
-  
+    execSync(`terrad keys show ${exec.from} --output json`).toString(),
+  ).type;
+
   const wallet = lcd.wallet(key);
 
   const chainId: string = exec.chainId ? exec.chainId : lcd.config.chainID;
@@ -187,15 +185,18 @@ export async function handleExecCommand(
   const unsignedTx = new Tx(
     new TxBody(msgs, memo),
     new AuthInfo([], new Fee(gas, feeAmount)),
-    []
+    [],
   );
 
   const signOptions: SignOptions = {
     accountNumber,
     sequence,
-    signMode: keyType === 'ledger' ? SignMode.SIGN_MODE_LEGACY_AMINO_JSON : SignMode.SIGN_MODE_DIRECT,
-    chainID: chainId
-  }
+    signMode:
+      keyType === 'ledger'
+        ? SignMode.SIGN_MODE_LEGACY_AMINO_JSON
+        : SignMode.SIGN_MODE_DIRECT,
+    chainID: chainId,
+  };
 
   if (exec.generateOnly) {
     if (exec.yaml) {
@@ -206,8 +207,8 @@ export async function handleExecCommand(
   } else {
     if (!exec.yes) {
       let msg = unsignedTx.body.messages[0].toData() as any;
-      msg.execute_msg = (unsignedTx
-        .body.messages[0] as MsgExecuteContract).execute_msg;
+      msg.execute_msg = (unsignedTx.body
+        .messages[0] as MsgExecuteContract).execute_msg;
 
       console.log(
         yaml.stringify({
@@ -232,7 +233,7 @@ export async function handleExecCommand(
 
     const signedTx = await key.signTx(unsignedTx, signOptions);
     let result;
-  
+
     switch (exec.broadcastMode) {
       case 'sync':
         result = await lcd.tx.broadcastSync(signedTx);
