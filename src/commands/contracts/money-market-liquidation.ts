@@ -20,7 +20,8 @@ import {
   queryLiquidationBid,
   queryLiquidationBidsByCollateral,
   queryLiquidationBidsByUser,
-  queryLiquidationQueueBidsByUser,
+  queryLiquidationQueueBid,
+  queryLiquidationQueueBidByUser,
   queryLiquidationConfig,
   queryLiquidationLiquidationAmount,
 } from '@anchor-protocol/anchor.js';
@@ -218,7 +219,7 @@ const getBidsByUser = query
     const addressProvider = new AddressProviderFromJSON(
       resolveChainIDToNetworkName(query.chainId),
     );
-    const queryBidsByUser = await queryLiquidationQueueBidsByUser({
+    const queryBidsByUser = await queryLiquidationQueueBidByUser({
       lcd,
       bidder: accAddress(bidder),
       collateral_token: accAddress(collateralToken),
