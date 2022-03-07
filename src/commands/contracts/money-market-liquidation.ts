@@ -179,20 +179,15 @@ const getBid = query
   .description(
     "Get information about the specified bidder's bid for the specified collateral",
   )
-  .requiredOption(
-    '--collateral-token <AccAddress>',
-    'Token contract address of bidding collateral',
-  )
   .requiredOption('--bidder <AccAddress>', 'Address of bidder')
-  .action(async ({ collateralToken, bidder }: Bid) => {
+  .action(async ({ bidder }: Bid) => {
     const lcd = getLCDClient(query.chainId);
     const addressProvider = new AddressProviderFromJSON(
       resolveChainIDToNetworkName(query.chainId),
     );
     const queryBid = await queryLiquidationQueueBid({
       lcd,
-      collateral_token: accAddress(collateralToken),
-      bidder: accAddress(bidder),
+      bid_idx: bidder,
     })(addressProvider);
     await handleQueryCommand(query, queryBid);
   });
