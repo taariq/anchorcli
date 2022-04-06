@@ -240,7 +240,7 @@ const getBidsByCollateral = query
   .description(
     'Get bid information for all bids submitted for the specified collateral',
   )
-  .requiredOption(
+  .option(
     '--collateral-token <AccAddress>',
     'Token contract address of collateral',
   )

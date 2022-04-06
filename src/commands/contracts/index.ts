@@ -10,7 +10,6 @@ import Custody from './money-market-custody';
 import bEthCustody from './money-market-beth-custody';
 import Overseer from './money-market-overseer';
 import Interset from './money-market-interest';
-import Terraswap from './terraswap';
 import Gov from './gov';
 import Airdrop from './airdrop';
 import Collector from './collector';
@@ -35,7 +34,6 @@ export const anchor = [
   bEthCustody,
   Overseer,
   Interset,
-  Terraswap,
   Gov,
   Airdrop,
   Collector,
